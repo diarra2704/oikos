@@ -1,0 +1,28 @@
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+return new class extends Migration
+{
+    public function up(): void
+    {
+        Schema::create('rapport_mensuels', function (Blueprint $table) {
+            $table->id();
+            $table->foreignId('faiseur_id')->constrained('users')->cascadeOnDelete();
+            $table->foreignId('fd_id')->nullable()->constrained('familles_disciples')->nullOnDelete();
+            $table->string('mois'); // format YYYY-MM
+            $table->json('donnees'); // snapshot complet des stats calculées
+            $table->text('observations')->nullable();
+            $table->timestamps();
+
+            $table->unique(['faiseur_id', 'mois']);
+        });
+    }
+
+    public function down(): void
+    {
+        Schema::dropIfExists('rapport_mensuels');
+    }
+};
