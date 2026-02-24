@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
+import SearchableSelect from '@/Components/SearchableSelect.vue';
 import { Head, Link, useForm } from '@inertiajs/vue3';
 import { ref, watch, computed } from 'vue';
 import axios from 'axios';
@@ -58,6 +59,7 @@ const form = useForm({
     prenom: '',
     nom: '',
     telephone: '',
+    telephone_secondaire: '',
     email: '',
     statut_spirituel: 'NA',
     genre: '',
@@ -252,8 +254,12 @@ function submit() {
                         <input v-model="form.nom" type="text" required class="w-full rounded-lg border border-slate-300 px-4 py-2.5 text-sm focus:border-blue-500 focus:ring-blue-500" />
                     </div>
                     <div>
-                        <label class="mb-1 block text-sm font-medium text-slate-700">Telephone</label>
-                        <input v-model="form.telephone" type="tel" class="w-full rounded-lg border border-slate-300 px-4 py-2.5 text-sm focus:border-blue-500 focus:ring-blue-500" />
+                        <label class="mb-1 block text-sm font-medium text-slate-700">Téléphone</label>
+                        <input v-model="form.telephone" type="tel" class="w-full rounded-lg border border-slate-300 px-4 py-2.5 text-sm focus:border-blue-500 focus:ring-blue-500" placeholder="Principal" />
+                    </div>
+                    <div>
+                        <label class="mb-1 block text-sm font-medium text-slate-700">Téléphone secondaire</label>
+                        <input v-model="form.telephone_secondaire" type="tel" class="w-full rounded-lg border border-slate-300 px-4 py-2.5 text-sm focus:border-blue-500 focus:ring-blue-500" placeholder="Optionnel" />
                     </div>
                     <div>
                         <label class="mb-1 block text-sm font-medium text-slate-700">Genre</label>
@@ -269,10 +275,12 @@ function submit() {
                     </div>
                     <div>
                         <label class="mb-1 block text-sm font-medium text-slate-700">Quartier</label>
-                        <select v-if="optionsQuartier.length" v-model="form.quartier" class="w-full rounded-lg border border-slate-300 px-4 py-2.5 text-sm">
-                            <option value="">—</option>
-                            <option v-for="p in optionsQuartier" :key="p.valeur" :value="p.valeur">{{ p.libelle }}</option>
-                        </select>
+                        <SearchableSelect
+                            v-if="optionsQuartier.length"
+                            v-model="form.quartier"
+                            :options="optionsQuartier.map((p) => ({ valeur: p.valeur, libelle: p.libelle }))"
+                            placeholder="Rechercher un quartier..."
+                        />
                         <input v-else v-model="form.quartier" type="text" class="w-full rounded-lg border border-slate-300 px-4 py-2.5 text-sm focus:border-blue-500 focus:ring-blue-500" />
                     </div>
                 </div>
@@ -344,10 +352,12 @@ function submit() {
                 <div class="grid gap-4 sm:grid-cols-2">
                     <div>
                         <label class="mb-1 block text-sm font-medium text-slate-700">Profession</label>
-                        <select v-if="optionsProfession.length" v-model="form.profession" class="w-full rounded-lg border border-slate-300 px-4 py-2.5 text-sm">
-                            <option value="">—</option>
-                            <option v-for="p in optionsProfession" :key="p.valeur" :value="p.valeur">{{ p.libelle }}</option>
-                        </select>
+                        <SearchableSelect
+                            v-if="optionsProfession.length"
+                            v-model="form.profession"
+                            :options="optionsProfession.map((p) => ({ valeur: p.valeur, libelle: p.libelle }))"
+                            placeholder="Rechercher une profession..."
+                        />
                         <input v-else v-model="form.profession" type="text" placeholder="Ex: Enseignant, Infirmier..." class="w-full rounded-lg border border-slate-300 px-4 py-2.5 text-sm focus:border-blue-500 focus:ring-blue-500" />
                     </div>
                     <div>
@@ -366,10 +376,11 @@ function submit() {
                     </div>
                     <div>
                         <label class="mb-1 block text-sm font-medium text-slate-700">Secteur d'activité</label>
-                        <select v-model="form.secteur_activite" class="w-full rounded-lg border border-slate-300 px-4 py-2.5 text-sm">
-                            <option value="">—</option>
-                            <option v-for="p in optionsSecteur" :key="p.valeur" :value="p.valeur">{{ p.libelle }}</option>
-                        </select>
+                        <SearchableSelect
+                            v-model="form.secteur_activite"
+                            :options="optionsSecteur"
+                            placeholder="Rechercher un secteur..."
+                        />
                     </div>
                     <div>
                         <label class="mb-1 block text-sm font-medium text-slate-700">Nombre d'enfants</label>

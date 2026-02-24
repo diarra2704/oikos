@@ -42,6 +42,7 @@ const form = useForm({
     prenom: props.membre.prenom,
     nom: props.membre.nom,
     telephone: props.membre.telephone || '',
+    telephone_secondaire: props.membre.telephone_secondaire || '',
     email: props.membre.email || '',
     statut_spirituel: props.membre.statut_spirituel,
     source: props.membre.source || '',
@@ -96,7 +97,11 @@ function submit() {
                     </div>
                     <div>
                         <label class="mb-1 block text-sm font-medium text-slate-700">Téléphone</label>
-                        <input v-model="form.telephone" type="tel" class="w-full rounded-lg border border-slate-300 px-4 py-2.5 text-sm focus:border-blue-500 focus:ring-blue-500" />
+                        <input v-model="form.telephone" type="tel" class="w-full rounded-lg border border-slate-300 px-4 py-2.5 text-sm focus:border-blue-500 focus:ring-blue-500" placeholder="Principal" />
+                    </div>
+                    <div>
+                        <label class="mb-1 block text-sm font-medium text-slate-700">Téléphone secondaire</label>
+                        <input v-model="form.telephone_secondaire" type="tel" class="w-full rounded-lg border border-slate-300 px-4 py-2.5 text-sm focus:border-blue-500 focus:ring-blue-500" placeholder="Optionnel" />
                     </div>
                     <div>
                         <label class="mb-1 block text-sm font-medium text-slate-700">Email</label>

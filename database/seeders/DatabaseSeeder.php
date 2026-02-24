@@ -15,7 +15,9 @@ class DatabaseSeeder extends Seeder
             FdSeeder::class,
             BadgeSeeder::class,
             ParametreValeurSeeder::class,
+            DepartementSeeder::class,
             DemoSeeder::class,
+            SuperviseursSeeder::class,
         ]);
     }
 }

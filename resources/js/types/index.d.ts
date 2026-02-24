@@ -23,6 +23,11 @@ export interface FamilleDisciples {
     users_count?: number;
     membres_count?: number;
     cellules_count?: number;
+    faiseurs_count?: number;
+    na_count?: number;
+    nc_count?: number;
+    fideles_count?: number;
+    star_count?: number;
 }
 
 export interface Cellule {

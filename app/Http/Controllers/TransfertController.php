@@ -26,12 +26,15 @@ class TransfertController extends Controller
             abort(403);
         }
 
+        // Exclure les transferts dont le membre a été supprimé
+        $query->whereHas('membre');
+
         $transferts = $query->orderBy('created_at', 'desc')
             ->paginate(20)
             ->withQueryString();
 
         $enAttente = $user->isAdmin()
-            ? Transfert::enAttente()->count()
+            ? Transfert::enAttente()->whereHas('membre')->count()
             : 0;
 
         return Inertia::render('Transferts/Index', [

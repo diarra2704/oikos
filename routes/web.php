@@ -10,6 +10,7 @@ use App\Http\Controllers\FdController;
 use App\Http\Controllers\HistoriqueController;
 use App\Http\Controllers\InvitationController;
 use App\Http\Controllers\SearchController;
+use App\Http\Controllers\SmsController;
 use App\Http\Controllers\InteractionController;
 use App\Http\Controllers\KpiController;
 use App\Http\Controllers\MembreController;
@@ -23,6 +24,7 @@ use App\Http\Controllers\RapportController;
 use App\Http\Controllers\RapportMensuelController;
 use App\Http\Controllers\TemoignageController;
 use App\Http\Controllers\TransfertController;
+use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
 // ── Page d'accueil : redirige vers login ──
@@ -39,6 +41,13 @@ Route::middleware('auth')->group(function () {
 
     // Historique / Dernières modifications (admin + superviseur)
     Route::get('/historique', [HistoriqueController::class, 'index'])->name('historique.index')->middleware('role:superviseur');
+
+    // Envoi SMS (admin + superviseur)
+    Route::get('/sms', [SmsController::class, 'index'])->name('sms.index')->middleware('role:superviseur');
+    Route::get('/sms/create', [SmsController::class, 'create'])->name('sms.create')->middleware('role:superviseur');
+    Route::get('/sms/membres-by-fd', [SmsController::class, 'membresByFd'])->name('sms.membres-by-fd')->middleware('role:superviseur');
+    Route::post('/sms', [SmsController::class, 'store'])->name('sms.store')->middleware('role:superviseur');
+    Route::delete('/sms/{envoi}', [SmsController::class, 'destroy'])->name('sms.destroy')->middleware('role:superviseur');
 
     // Recherche globale
     Route::get('/recherche', [SearchController::class, 'index'])->name('recherche');
@@ -127,6 +136,13 @@ Route::middleware('auth')->group(function () {
     Route::post('/transferts', [TransfertController::class, 'store'])->name('transferts.store')->middleware('role:superviseur');
     Route::get('/transferts/{transfert}', [TransfertController::class, 'show'])->name('transferts.show')->middleware('role:superviseur');
     Route::put('/transferts/{transfert}/traiter', [TransfertController::class, 'traiter'])->name('transferts.traiter')->middleware('role:admin');
+
+    // Utilisateurs (admin)
+    Route::get('/users', [UserController::class, 'index'])->name('users.index')->middleware('role:admin');
+    Route::get('/users/create', [UserController::class, 'create'])->name('users.create')->middleware('role:admin');
+    Route::post('/users', [UserController::class, 'store'])->name('users.store')->middleware('role:admin');
+    Route::get('/users/{user}/reset-password', [UserController::class, 'showResetPassword'])->name('users.reset-password')->middleware('role:admin');
+    Route::put('/users/{user}/reset-password', [UserController::class, 'resetPassword'])->name('users.reset-password.update')->middleware('role:admin');
 
     // Paramètrage (admin)
     Route::get('/parametrage', [ParametrageController::class, 'index'])->name('parametrage.index')->middleware('role:admin');

@@ -25,6 +25,7 @@ const navigation = computed(() => {
         { name: 'Rapport Mensuel', href: 'rapport-mensuel.index', icon: '📝', roles: ['admin', 'superviseur', 'leader_cellule', 'faiseur'] },
         { name: 'Rapports', href: 'rapports.index', icon: '📋', roles: ['admin', 'superviseur', 'leader_cellule', 'faiseur'] },
         { name: 'Transferts', href: 'transferts.index', icon: '🔄', roles: ['admin', 'superviseur'] },
+        { name: 'Envoi SMS', href: 'sms.index', icon: '📱', roles: ['admin', 'superviseur'] },
         { name: 'KPI', href: 'kpi.index', icon: '📊', roles: ['admin', 'superviseur'] },
         { name: 'Témoignages', href: 'temoignages.index', icon: '✨', roles: ['admin', 'superviseur', 'leader_cellule', 'faiseur'] },
         { name: 'Tableau d\'honneur', href: 'honneur', icon: '🏆', roles: ['admin', 'superviseur', 'leader_cellule', 'faiseur'] },
@@ -32,6 +33,7 @@ const navigation = computed(() => {
         { name: 'Mes rappels', href: 'rappels.index', icon: '⏰', roles: ['faiseur'] },
         { name: 'Invitations au culte', href: 'invitations.index', icon: '🎫', roles: ['admin', 'superviseur', 'leader_cellule', 'faiseur'] },
         { name: 'Historique', href: 'historique.index', icon: '📜', roles: ['admin', 'superviseur'] },
+        { name: 'Utilisateurs', href: 'users.index', icon: '👤', roles: ['admin'] },
         { name: 'Paramètrage', href: 'parametrage.index', icon: '⚙️', roles: ['admin'] },
     ];
     return items.filter(item => item.roles.includes(role));
@@ -73,8 +75,8 @@ function isActive(routeName: string): boolean {
                 <Link :href="route('dashboard')" class="flex items-center gap-3">
                     <img src="/images/logo.png" alt="Oikos" class="h-10 w-10 object-contain" />
                     <span class="text-lg font-bold tracking-tight text-white">Oikos</span>
-                </Link>
-            </div>
+                                </Link>
+                            </div>
 
             <nav class="sidebar-nav min-h-0 flex-1 space-y-1 overflow-x-hidden px-3 py-4" aria-label="Navigation principale">
                 <Link
@@ -99,8 +101,8 @@ function isActive(routeName: string): boolean {
                         <p class="truncate text-sm font-medium text-white">{{ user?.prenom }} {{ user?.nom }}</p>
                         <p class="truncate text-xs text-blue-300/80 capitalize">{{ user?.role?.replace('_', ' ') }}</p>
                     </div>
-                </div>
-            </div>
+                            </div>
+                        </div>
         </aside>
 
         <!-- ════════ TOP BAR ════════ -->
@@ -118,22 +120,22 @@ function isActive(routeName: string): boolean {
                 </div>
                 <div class="flex items-center gap-1">
                     <NotificationsDropdown :items="notifications.items" :total="notifications.total" />
-                    <Dropdown align="right" width="48">
-                        <template #trigger>
+                                <Dropdown align="right" width="48">
+                                    <template #trigger>
                             <button class="flex items-center gap-2 rounded-lg px-3 py-1.5 text-sm text-slate-600 transition hover:bg-slate-100">
                                 <div class="flex h-8 w-8 items-center justify-center rounded-full bg-blue-100 text-xs font-bold text-blue-700">
                                     {{ user?.prenom?.[0] }}{{ user?.nom?.[0] }}
                                 </div>
                                 <span class="hidden md:inline">{{ user?.prenom }}</span>
-                            </button>
-                        </template>
-                        <template #content>
+                                            </button>
+                                    </template>
+                                    <template #content>
                             <DropdownLink :href="route('profile.edit')">Mon profil</DropdownLink>
                             <DropdownLink :href="route('logout')" method="post" as="button">Déconnexion</DropdownLink>
-                        </template>
-                    </Dropdown>
-                </div>
-            </div>
+                                    </template>
+                                </Dropdown>
+                            </div>
+                        </div>
         </header>
 
         <!-- ════════ FLASH MESSAGES ════════ -->
@@ -142,8 +144,8 @@ function isActive(routeName: string): boolean {
                 <span class="text-lg">✅</span>
                 <p class="flex-1 text-sm font-medium text-emerald-800">{{ flash.success }}</p>
                 <button @click="showFlash = false" class="text-emerald-400 hover:text-emerald-600">&times;</button>
-            </div>
-        </div>
+                    </div>
+                </div>
 
         <!-- ════════ MAIN CONTENT ════════ -->
         <main class="pt-14 pb-20 lg:pb-6 lg:pl-64">
@@ -194,7 +196,7 @@ function isActive(routeName: string): boolean {
                         <div class="sticky top-0 flex items-center justify-between border-b border-slate-200 bg-white px-4 py-3">
                             <h2 class="text-lg font-semibold text-slate-800">Menu</h2>
                             <button type="button" class="rounded-lg p-2 text-slate-500 hover:bg-slate-100" @click="closeMobileMenu" aria-label="Fermer le menu">✕</button>
-                        </div>
+                    </div>
                         <nav class="grid gap-0 py-2" aria-label="Tous les modules">
                             <Link
                                 v-for="item in navigation"

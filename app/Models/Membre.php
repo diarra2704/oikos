@@ -16,6 +16,7 @@ class Membre extends Model
         'nom',
         'prenom',
         'telephone',
+        'telephone_secondaire',
         'email',
         'statut_spirituel',
         'fd_id',

@@ -54,6 +54,8 @@ class HandleInertiaRequests extends Middleware
             'flash' => [
                 'success' => fn () => $request->session()->get('success'),
                 'error' => fn () => $request->session()->get('error'),
+                'generated_password' => fn () => $request->session()->get('generated_password'),
+                'generated_user_email' => fn () => $request->session()->get('generated_user_email'),
             ],
             'notifications' => fn () => $this->notifications($request),
         ];
@@ -73,9 +75,9 @@ class HandleInertiaRequests extends Middleware
 
         $items = [];
 
-        // Transferts en attente (admin)
+        // Transferts en attente (admin) — uniquement ceux dont le membre existe (non supprimé)
         if ($user->role === Role::ADMIN) {
-            $n = Transfert::enAttente()->count();
+            $n = Transfert::enAttente()->whereHas('membre')->count();
             if ($n > 0) {
                 $items[] = [
                     'type' => 'transferts',
@@ -99,25 +101,39 @@ class HandleInertiaRequests extends Middleware
             }
         }
 
-        // Membres absents depuis 3 semaines (faiseur : mes âmes ; superviseur : sa FD)
+        // Membres absents depuis 3 semaines (faiseur : mes âmes ; superviseur : sa FD) — uniquement membres actifs
         if ($user->role === Role::FAISEUR) {
-            $n = Membre::where('suivi_par', $user->id)->absentDepuis(3)->count();
+            $n = Membre::where('suivi_par', $user->id)->where('actif', true)->absentDepuis(3)->count();
             if ($n > 0) {
                 $items[] = [
                     'type' => 'absents',
                     'label' => $n === 1 ? '1 âme absente depuis 3 semaines' : "{$n} âmes absentes depuis 3 semaines",
-                    'url' => route('dashboard'),
+                    'url' => route('membres.index', ['absent_depuis' => 3, 'actif' => 1]),
                     'count' => $n,
                 ];
             }
         }
         if ($user->role === Role::SUPERVISEUR && $user->fd_id) {
-            $n = Membre::where('fd_id', $user->fd_id)->absentDepuis(3)->count();
+            // Exclure le superviseur lui-même (fiche membre de la FD sans suivi de présence)
+            $n = Membre::where('fd_id', $user->fd_id)
+                ->where('actif', true)
+                ->absentDepuis(3)
+                ->where(function ($q) use ($user) {
+                    // Ne pas compter si même email que le superviseur
+                    $q->where('email', '!=', $user->email ?? '')->orWhereNull('email');
+                })
+                ->where(function ($q) use ($user) {
+                    // Ni si même nom+prénom sans email (fiche superviseur créée sans email)
+                    $q->whereNotNull('email')
+                        ->orWhere('prenom', '!=', $user->prenom)
+                        ->orWhere('nom', '!=', $user->nom);
+                })
+                ->count();
             if ($n > 0) {
                 $items[] = [
                     'type' => 'absents',
                     'label' => $n === 1 ? '1 membre absent depuis 3 semaines' : "{$n} membres absents depuis 3 semaines",
-                    'url' => route('dashboard'),
+                    'url' => route('membres.index', ['absent_depuis' => 3, 'actif' => 1]),
                     'count' => $n,
                 ];
             }

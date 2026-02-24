@@ -104,13 +104,22 @@ function confirmDelete() {
                         <p class="mt-2 text-sm text-slate-500">
                             Superviseur : <span class="font-medium text-slate-700">{{ fd.superviseur?.prenom || '—' }} {{ fd.superviseur?.nom || '' }}</span>
                         </p>
-                        <div class="mt-4 flex gap-6 border-t border-slate-100 pt-3 text-xs text-slate-500">
-                            <div><span class="font-semibold text-slate-700">{{ fd.cellules_count }}</span> cellules</div>
-                            <div><span class="font-semibold text-slate-700">{{ fd.users_count }}</span> serviteurs</div>
+                        <div class="mt-4 space-y-2 border-t border-slate-100 pt-3 text-xs text-slate-600">
+                            <div class="flex flex-wrap gap-x-4 gap-y-1">
+                                <span><strong class="text-slate-700">Faiseurs</strong> {{ fd.faiseurs_count ?? 0 }}</span>
+                                <span><strong class="text-amber-700">NA</strong> {{ fd.na_count ?? 0 }}</span>
+                                <span><strong class="text-blue-700">NC</strong> {{ fd.nc_count ?? 0 }}</span>
+                                <span><strong class="text-emerald-700">Fidèles</strong> {{ fd.fideles_count ?? 0 }}</span>
+                                <span><strong class="text-purple-700">STAR</strong> {{ fd.star_count ?? 0 }}</span>
+                            </div>
+                            <div class="flex gap-6 text-slate-500">
+                                <div><span class="font-semibold text-slate-700">{{ fd.cellules_count }}</span> cellules</div>
+                                <div><span class="font-semibold text-slate-700">{{ fd.users_count }}</span> serviteurs</div>
+                            </div>
                         </div>
                     </div>
                 </Link>
-                <div class="absolute right-3 top-8">
+                <div class="absolute bottom-3 right-3">
                     <button
                         type="button"
                         @click.prevent="openEdit(fd)"

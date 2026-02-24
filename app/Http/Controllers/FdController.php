@@ -26,7 +26,16 @@ class FdController extends Controller
             abort(403, 'Accès non autorisé.');
         }
 
-        $fds = FamilleDisciples::withCount(['users', 'membres', 'cellules'])
+        $fds = FamilleDisciples::withCount([
+            'users',
+            'membres',
+            'cellules',
+            'users as faiseurs_count' => fn ($q) => $q->whereIn('role', [Role::FAISEUR, Role::LEADER_CELLULE]),
+            'membres as na_count' => fn ($q) => $q->where('statut_spirituel', 'NA'),
+            'membres as nc_count' => fn ($q) => $q->where('statut_spirituel', 'NC'),
+            'membres as fideles_count' => fn ($q) => $q->where('statut_spirituel', 'fidele'),
+            'membres as star_count' => fn ($q) => $q->where('statut_spirituel', 'STAR'),
+        ])
             ->with('superviseur')
             ->get();
 

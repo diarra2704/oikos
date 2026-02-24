@@ -259,8 +259,12 @@ function submitFormations() {
                 <h3 class="mb-4 text-sm font-semibold uppercase tracking-wider text-slate-500">Informations</h3>
                 <dl class="grid gap-3 sm:grid-cols-2">
                     <div>
-                        <dt class="text-xs text-slate-500">Telephone</dt>
-                        <dd class="text-sm font-medium text-slate-800">{{ membre.telephone || '---' }}</dd>
+                        <dt class="text-xs text-slate-500">Téléphone</dt>
+                        <dd class="text-sm font-medium text-slate-800">{{ membre.telephone || '—' }}</dd>
+                    </div>
+                    <div>
+                        <dt class="text-xs text-slate-500">Téléphone secondaire</dt>
+                        <dd class="text-sm font-medium text-slate-800">{{ membre.telephone_secondaire || '—' }}</dd>
                     </div>
                     <div>
                         <dt class="text-xs text-slate-500">Email</dt>

@@ -29,6 +29,9 @@ const form = useForm({
             <p class="mt-1 text-sm text-gray-600">
                 Mettez à jour vos informations personnelles.
             </p>
+            <p v-if="status" class="mt-2 rounded-lg bg-emerald-50 p-3 text-sm text-emerald-800">
+                {{ status }}
+            </p>
         </header>
 
         <form
@@ -49,7 +52,7 @@ const form = useForm({
 
             <div>
                 <InputLabel for="telephone" value="Téléphone" />
-                <TextInput id="telephone" type="tel" class="mt-1 block w-full" v-model="form.telephone" required />
+                <TextInput id="telephone" type="tel" class="mt-1 block w-full" v-model="form.telephone" />
                 <InputError class="mt-2" :message="form.errors.telephone" />
             </div>
 
