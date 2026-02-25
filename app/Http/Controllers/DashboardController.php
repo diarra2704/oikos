@@ -37,8 +37,8 @@ class DashboardController extends Controller
             $query->where('suivi_par', $user->id);
         }
 
-        $naissance = (clone $query)->anniversairesNaissanceMois()->orderByRaw('DAY(date_naissance)')->limit(15)->get();
-        $conversion = (clone $query)->anniversairesConversionMois()->orderByRaw('DAY(date_conversion)')->limit(15)->get();
+        $naissance = (clone $query)->anniversairesNaissanceMois()->orderByRaw('CAST(strftime("%d", date_naissance) AS INTEGER)')->limit(15)->get();
+        $conversion = (clone $query)->anniversairesConversionMois()->orderByRaw('CAST(strftime("%d", date_conversion) AS INTEGER)')->limit(15)->get();
 
         $items = [];
         foreach ($naissance as $m) {

@@ -30,7 +30,7 @@ class AnniversaireController extends Controller
 
         $naissance = (clone $query)
             ->anniversairesNaissanceMois($mois, $annee)
-            ->orderByRaw('DAY(date_naissance)')
+            ->orderByRaw('CAST(strftime("%d", date_naissance) AS INTEGER)')
             ->get()
             ->map(fn (Membre $m) => [
                 'id' => $m->id,
@@ -42,7 +42,7 @@ class AnniversaireController extends Controller
 
         $conversion = (clone $query)
             ->anniversairesConversionMois($mois, $annee)
-            ->orderByRaw('DAY(date_conversion)')
+            ->orderByRaw('CAST(strftime("%d", date_conversion) AS INTEGER)')
             ->get()
             ->map(fn (Membre $m) => [
                 'id' => $m->id,
