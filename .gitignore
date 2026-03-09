@@ -22,3 +22,6 @@
 Homestead.json
 Homestead.yaml
 Thumbs.db
+oikos_data.sql
+oikos_data_lws.sql
+DeleteBD.txt

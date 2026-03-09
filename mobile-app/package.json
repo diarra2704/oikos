@@ -1,0 +1,22 @@
+{
+  "name": "oikos-mobile",
+  "version": "1.0.0",
+  "description": "Oikos - Version mobile (même base de données)",
+  "private": true,
+  "scripts": {
+    "build": "echo 'Aucun build nécessaire - l’app charge le site en ligne'",
+    "cap:add:android": "npx cap add android",
+    "cap:sync": "npx cap sync",
+    "cap:open:android": "npx cap open android"
+  },
+  "dependencies": {
+    "@capacitor/core": "^6.0.0"
+  },
+  "devDependencies": {
+    "@capacitor/cli": "^6.0.0",
+    "@capacitor/android": "^6.0.0"
+  },
+  "capacitor": {
+    "platforms": ["android"]
+  }
+}
